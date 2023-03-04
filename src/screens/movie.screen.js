@@ -20,6 +20,7 @@ import { APPEND_TO_RESPONSE } from '../constants/url';
 import CastCard from '../components/cards/cast/CastCard';
 import MovieCard from '../components/cards/movie/MovieCard';
 import movieProvider from '../provider/movie.provider';
+import Loading from '../components/loading';
 
 const { height, width } = Dimensions.get("window");
 
@@ -42,6 +43,8 @@ export default ({ route, navigation }) => {
       console.error("movieProvider.getMovieById: ", error)
     })
   }, [movieId])
+
+  if(!movie || !movieId) return <Loading />
 
   return (
     <ScrollView style={styles.container}>
@@ -98,7 +101,7 @@ export default ({ route, navigation }) => {
         {movie?.runtime} Min
       </Text>
       <Text style={styles.genreText}>
-        {movieProvider. getLanguage(movie?.original_language)?.english_name}
+        {movieProvider.getLanguage(movie?.original_language)?.english_name}
       </Text>
       <View style={styles.overviewContainer}>
         <Text style={styles.overviewTitle}>Overview</Text>
