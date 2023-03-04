@@ -23,7 +23,7 @@ export default ({ navigation }) => {
     });
 
     tmbdProvider.getUpcomingMovies().then(res => {
-      setUpcomingMovies(res?.data)
+      setUpcomingMovies(res?.data?.results)
     }).catch(error => {
       console.error("tmbdProvider.getUpcomingMovies #1: ", error)
     })
@@ -90,7 +90,7 @@ export default ({ navigation }) => {
       </View>
       <View>
         <FlatList
-          data={nowPlayingMovies}
+          data={upcomingMovies}
           horizontal
           showHorizontalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}

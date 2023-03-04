@@ -19,6 +19,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, Ionicons } from "@expo/vector-icons";
 import ItemSeparator from '../components/ItemSeparator';
 import { APPEND_TO_RESPONSE } from '../constants/url';
+import CastCard from '../components/cards/CastCard';
+import MovieCard from '../components/cards/MovieCard';
 
 const { height, width } = Dimensions.get("window");
 
@@ -29,10 +31,13 @@ export default ({ route, navigation }) => {
 
   const { movieId } = route.params;
   const [movie, setMovie] = useState({})
-  const [isCastSelected, setIsCastSelected] = useState(false)
+  const [isCastSelected, setIsCastSelected] = useState(true)
 
   useEffect(() => {
-    tmbdProvider.getMovieById(movieId, APPEND_TO_RESPONSE.VIDEOS).then(res => {
+    tmbdProvider.getMovieById(
+      movieId, 
+      `${APPEND_TO_RESPONSE.VIDEOS},${APPEND_TO_RESPONSE.CREDITS},${APPEND_TO_RESPONSE.RECOMMENDATIONS},${APPEND_TO_RESPONSE.SIMILAR}`
+    ).then(res => {
       setMovie(res?.data)
     }).catch(error => {
       console.error("tmbdProvider.getMovieById: ", error)
@@ -64,7 +69,10 @@ export default ({ route, navigation }) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() =>
-            Share.share({ message: `${movie?.title}\n\n${movie?.homepage}` })
+            Share.share({ 
+              message: `${movie?.title}\n\n${movie?.homepage}`,
+              url: `${movie?.title}\n\n${movie?.homepage}`
+            })
           }
         >
           <Text style={styles.headerText}>Share</Text>
