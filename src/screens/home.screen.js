@@ -77,7 +77,7 @@ export default ({ navigation }) => {
               voteAverage={item.vote_average}
               voteCount={item.vote_count}
               heartLess={false}
-              onPress={() => navigation.navigate("movie")}
+              onPress={() => navigation.navigate("movie", { movieId: `${item.id}` })}
             />
           )}
           onPress={(name) => setActiveGenre(name)}
@@ -106,7 +106,7 @@ export default ({ navigation }) => {
               voteCount={item.vote_count}
               size={.6}
               heartLess={false}
-              // onPress={}
+              onPress={() => navigation.navigate("movie", { movieId: `${item.id}` })}
             />
           )}
           onPress={(name) => setActiveGenre(name)}
