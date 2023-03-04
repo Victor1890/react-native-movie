@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, TouchableNativeFeedback } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { colors, fonts, images } from "../../constants";
-import tmbdImageProvider from '../../provider/TMDB/tmbd-image.provider'
+import tmbdProvider from '../../provider/TMDB/tmbd.provider';
 
 export const MovieCard = ({
     title,
@@ -17,25 +17,13 @@ export const MovieCard = ({
 
     const [liked, setLiked] = useState(false);
     const [voteCountValue, setVoteCountValue] = useState(voteCount);
-    const [img, setImg] = useState(null)
-
-    useEffect(() => {
-
-      tmbdImageProvider.getPoster(poster).then(res => {
-        console.log({res})
-        setImg(res)
-      }).catch(error => {
-        console.error("tmbdImageProvider.getPoster: ", error)
-      })
-
-    }, [poster])
 
     return (
         <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
         <ImageBackground
           style={{ ...styles.container, width: 230 * size, height: 340 * size }}
           imageStyle={{ borderRadius: 12 }}
-          source={{ uri: img }}
+          source={{ uri: tmbdProvider.getPoster(poster) }}
         >
           <View style={{ ...styles.imdbContainer, paddingVertical: 3 * size }}>
             <Image
@@ -80,7 +68,7 @@ export const MovieCard = ({
           </Text>
           <View style={styles.movieSubTitleContainer}>
             <Text style={styles.movieSubTitle}>
-              {/* {getLanguage(language).english_name} */}
+              {tmbdProvider.getLanguage(language)?.english_name}
             </Text>
             <View style={styles.rowAndCenter}>
               <Ionicons

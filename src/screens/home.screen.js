@@ -8,19 +8,31 @@ import MovieCard from '../components/cards/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
 import tmbdProvider from '../provider/TMDB/tmbd.provider.js';
 
-const genres = ["All", "Action", "Comedy", "Romance", "Horror", "Sci-Fi"]
-
-export default () => {
+export default ({ navigation }) => {
 
   const [activeGenre, setActiveGenre] = useState('All')
-  const [nowPlayingMovie, setNowPlayingMovie] = useState({})
+  const [nowPlayingMovies, setNowPlayingMovies] = useState({})
+  const [upcomingMovies, setUpcomingMovies] = useState([{ id: 10110, name: "All" }])
+  const [genres, setGenres] = useState([{ id: 10110, name: "All" }])
 
   useEffect(() => {
     tmbdProvider.getNowPlayingMovies().then(res => {
-      setNowPlayingMovie(res?.data?.results)
+      setNowPlayingMovies(res?.data?.results)
     }).catch(error => {
       console.error("tmbdProvider.getNowPlayingMovies: ", error)
     });
+
+    tmbdProvider.getUpcomingMovies().then(res => {
+      setUpcomingMovies(res?.data)
+    }).catch(error => {
+      console.error("tmbdProvider.getUpcomingMovies #1: ", error)
+    })
+
+    tmbdProvider.getAllGenres().then(res => {
+      setGenres([ ...genres, ...res?.data?.genres])
+    }).catch(error => {
+      console.error("tmbdProvider.getUpcomingMovies #2: ", error)
+    })
   }, [])
 
   return (
@@ -39,30 +51,61 @@ export default () => {
           data={genres}
           horizontal
           showHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => `${item.id}`}
           ItemSeparatorComponent={<ItemSeparator width={20}/>}
           ListHeaderComponent={() => <ItemSeparator width={20}/>}
           ListFooterComponent={() => <ItemSeparator width={20}/>}
-          renderItem={({item}) => <GenreCard title={item} active={item === activeGenre} onPress={setActiveGenre}/>}
-          onPress={(name) => setActiveGenre(name)}
+          renderItem={({item}) => <GenreCard title={item.name} active={item.name === activeGenre} onPress={setActiveGenre}/>}
+          onPress={setActiveGenre}
         />
       </View>
       <View>
         <FlatList
-          data={nowPlayingMovie}
+          data={nowPlayingMovies}
           horizontal
+
           showHorizontalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}
           ItemSeparatorComponent={<ItemSeparator width={20}/>}
           ListHeaderComponent={() => <ItemSeparator width={20}/>}
           ListFooterComponent={() => <ItemSeparator width={20}/>}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <MovieCard 
               title={item.title}
               poster={item.poster_path}
               language={item.original_language}
               voteAverage={item.vote_average}
               voteCount={item.vote_count}
+              heartLess={false}
+              onPress={() => navigation.navigate("movie")}
+            />
+          )}
+          onPress={(name) => setActiveGenre(name)}
+        />
+      </View>
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Coming Soon</Text>
+        <Text style={styles.headerSubTitle}>View all</Text>
+      </View>
+      <View>
+        <FlatList
+          data={nowPlayingMovies}
+          horizontal
+          showHorizontalScrollIndicator={false}
+          keyExtractor={(item) => `${item.id}`}
+          ItemSeparatorComponent={<ItemSeparator width={20}/>}
+          ListHeaderComponent={() => <ItemSeparator width={20}/>}
+          ListFooterComponent={() => <ItemSeparator width={20}/>}
+          renderItem={({ item }) => (
+            <MovieCard 
+              title={item.title}
+              poster={item.poster_path}
+              language={item.original_language}
+              voteAverage={item.vote_average}
+              voteCount={item.vote_count}
+              size={.6}
+              heartLess={false}
               // onPress={}
             />
           )}

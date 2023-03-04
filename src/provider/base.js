@@ -2,12 +2,12 @@ import axios, { CreateAxiosDefaults } from "axios";
 
 export class BaseProvider {
     
+    #_axios;
     /**
      * @param {CreateAxiosDefaults} config 
      */
     constructor(config){
-        this._axios = axios.create(config);
-        console.log({_axios: this._axios.getUri()})
+        this.#_axios = axios.create(config);
     }
 
     params(params){
@@ -22,7 +22,7 @@ export class BaseProvider {
     async get(endpoint, config = {}) {
 
         return new Promise((resolve) => {
-            this._axios.get(`${endpoint}`, config)
+            this.#_axios.get(`${endpoint}`, config)
             .then((res) => {
                 resolve({ data: res.data })
             })
@@ -38,7 +38,7 @@ export class BaseProvider {
         let _isParam = Object.keys(params).length > 0
 
         return new Promise((resolve) => {
-            this._axios.post(`${endpoint}${_isParam ? `?${this.params(data)}` : ''}`, config)
+            this.#_axios.post(`${endpoint}${_isParam ? `?${this.params(data)}` : ''}`, config)
             .then((res) => {
                 resolve({ data: res.data })
             })

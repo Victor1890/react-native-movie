@@ -4,9 +4,12 @@ module.exports = function(api) {
     presets: ['babel-preset-expo'],
     "plugins": [
       ["module:react-native-dotenv", {
-        "envName": "APP_ENV",
-        "moduleName": "@env",
-        "path": ".env"
+        moduleName: "@env",
+        path: ".env",
+        blacklist: null,
+        whitelist: ['MOVIE_API', 'MOVIE_API_IMAGE', 'MOVIE_API_KEY', 'VIDEO_BASE_URL'],
+        safe: false,
+        allowUndefined: true,
       }]
     ]
   };
