@@ -1,5 +1,4 @@
 import { StatusBar } from 'expo-status-bar';
-
 import { useEffect, useState } from 'react'
 import {
   ScrollView,
@@ -13,14 +12,14 @@ import {
   FlatList,
   Share,
 } from "react-native";
-import tmbdProvider from '../provider/TMDB/tmbd.provider';
 import { colors, fonts } from '../constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, Ionicons } from "@expo/vector-icons";
 import ItemSeparator from '../components/ItemSeparator';
 import { APPEND_TO_RESPONSE } from '../constants/url';
-import CastCard from '../components/cards/CastCard';
-import MovieCard from '../components/cards/MovieCard';
+import CastCard from '../components/cards/cast/CastCard';
+import MovieCard from '../components/cards/movie/MovieCard';
+import movieProvider from '../provider/movie.provider';
 
 const { height, width } = Dimensions.get("window");
 
@@ -34,13 +33,13 @@ export default ({ route, navigation }) => {
   const [isCastSelected, setIsCastSelected] = useState(true)
 
   useEffect(() => {
-    tmbdProvider.getMovieById(
+    movieProvider.getMovieById(
       movieId, 
       `${APPEND_TO_RESPONSE.VIDEOS},${APPEND_TO_RESPONSE.CREDITS},${APPEND_TO_RESPONSE.RECOMMENDATIONS},${APPEND_TO_RESPONSE.SIMILAR}`
     ).then(res => {
       setMovie(res?.data)
     }).catch(error => {
-      console.error("tmbdProvider.getMovieById: ", error)
+      console.error("movieProvider.getMovieById: ", error)
     })
   }, [movieId])
 
@@ -56,7 +55,7 @@ export default ({ route, navigation }) => {
         <Image
           style={styles.moviePosterImage}
           resizeMode="cover"
-          source={{ uri: tmbdProvider.getPoster(movie?.backdrop_path) }}
+          source={{ uri: movieProvider.getPoster(movie?.backdrop_path) }}
         />
       </View>
       <View style={styles.headerContainer}>
@@ -80,7 +79,7 @@ export default ({ route, navigation }) => {
       </View>
       <TouchableOpacity
         style={styles.playButton}
-        onPress={() => Linking.openURL(tmbdProvider. getVideo(movie?.videos?.results[0].key))}
+        onPress={() => Linking.openURL(movieProvider. getVideo(movie?.videos?.results[0].key))}
       >
         <Ionicons name="play-circle-outline" size={70} color={colors.white} />
       </TouchableOpacity>
@@ -99,7 +98,7 @@ export default ({ route, navigation }) => {
         {movie?.runtime} Min
       </Text>
       <Text style={styles.genreText}>
-        {tmbdProvider. getLanguage(movie?.original_language)?.english_name}
+        {movieProvider. getLanguage(movie?.original_language)?.english_name}
       </Text>
       <View style={styles.overviewContainer}>
         <Text style={styles.overviewTitle}>Overview</Text>

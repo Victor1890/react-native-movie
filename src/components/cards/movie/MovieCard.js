@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, TouchableNativeFeedback } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { colors, fonts, images } from "../../constants";
-import tmbdProvider from '../../provider/TMDB/tmbd.provider';
+import { useState } from 'react';
+import { Image, ImageBackground, Text, TouchableNativeFeedback, TouchableOpacity, View } from "react-native";
+import { colors, images } from "../../../constants";
+import movieProvider from '../../../provider/movie.provider';
+import { styles } from './style';
 
 export const MovieCard = ({
     title,
@@ -23,7 +24,7 @@ export const MovieCard = ({
         <ImageBackground
           style={{ ...styles.container, width: 230 * size, height: 340 * size }}
           imageStyle={{ borderRadius: 12 }}
-          source={{ uri: tmbdProvider.getPoster(poster) }}
+          source={{ uri: movieProvider.getPoster(poster) }}
         >
           <View style={{ ...styles.imdbContainer, paddingVertical: 3 * size }}>
             <Image
@@ -68,7 +69,7 @@ export const MovieCard = ({
           </Text>
           <View style={styles.movieSubTitleContainer}>
             <Text style={styles.movieSubTitle}>
-              {tmbdProvider.getLanguage(language)?.english_name}
+              {movieProvider.getLanguage(language)?.english_name}
             </Text>
             <View style={styles.rowAndCenter}>
               <Ionicons
@@ -84,55 +85,6 @@ export const MovieCard = ({
       </TouchableOpacity>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: 340,
-        width: 230,
-        borderRadius: 12,
-        elevation: 5,
-        marginVertical: 2,
-      },
-      movieTitle: {
-        fontFamily: colors.EXTRA_BOLD,
-        color: colors.gray,
-        paddingVertical: 2,
-        marginTop: 5,
-        width: 230,
-      },
-      movieSubTitleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-      },
-      movieSubTitle: {
-        fontSize: 12,
-        fontFamily: fonts.REGULAR,
-      },
-      rowAndCenter: {
-        flexDirection: "row",
-        alignItems: "center",
-      },
-      imdbContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        alignSelf: "flex-end",
-        backgroundColor: colors.yellow,
-        borderBottomLeftRadius: 5,
-        borderTopRightRadius: 12,
-        paddingVertical: 3,
-      },
-      imdbImage: {
-        height: 20,
-        width: 50,
-        borderBottomLeftRadius: 5,
-      },
-      imdbRating: {
-        marginRight: 5,
-        color: colors.heart,
-        fontFamily: fonts.EXTRA_BOLD,
-      },
-})
 
 MovieCard.defaultProps = {
     size: 1,

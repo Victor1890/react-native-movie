@@ -3,10 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { ScrollView, StyleSheet, View, Text, FlatList } from 'react-native';
 
 import { colors, fonts } from '../constants'
-import GenreCard from '../components/cards/GenreCard';
-import MovieCard from '../components/cards/MovieCard';
+import GenreCard from '../components/cards/genre/GenreCard';
+import MovieCard from '../components/cards/movie/MovieCard';
 import ItemSeparator from '../components/ItemSeparator';
-import tmbdProvider from '../provider/TMDB/tmbd.provider.js';
+import movieProvider from '../provider/movie.provider';
 
 export default ({ navigation }) => {
 
@@ -16,22 +16,22 @@ export default ({ navigation }) => {
   const [genres, setGenres] = useState([{ id: 10110, name: "All" }])
 
   useEffect(() => {
-    tmbdProvider.getNowPlayingMovies().then(res => {
+    movieProvider.getNowPlayingMovies().then(res => {
       setNowPlayingMovies(res?.data?.results)
     }).catch(error => {
-      console.error("tmbdProvider.getNowPlayingMovies: ", error)
+      console.error("movieProvider.getNowPlayingMovies: ", error)
     });
 
-    tmbdProvider.getUpcomingMovies().then(res => {
+    movieProvider.getUpcomingMovies().then(res => {
       setUpcomingMovies(res?.data?.results)
     }).catch(error => {
-      console.error("tmbdProvider.getUpcomingMovies #1: ", error)
+      console.error("movieProvider.getUpcomingMovies #1: ", error)
     })
 
-    tmbdProvider.getAllGenres().then(res => {
+    movieProvider.getAllGenres().then(res => {
       setGenres([ ...genres, ...res?.data?.genres])
     }).catch(error => {
-      console.error("tmbdProvider.getUpcomingMovies #2: ", error)
+      console.error("movieProvider.getUpcomingMovies #2: ", error)
     })
   }, [])
 
@@ -55,7 +55,13 @@ export default ({ navigation }) => {
           ItemSeparatorComponent={<ItemSeparator width={20}/>}
           ListHeaderComponent={() => <ItemSeparator width={20}/>}
           ListFooterComponent={() => <ItemSeparator width={20}/>}
-          renderItem={({item}) => <GenreCard title={item.name} active={item.name === activeGenre} onPress={setActiveGenre}/>}
+          renderItem={({item}) => (
+            <GenreCard 
+              title={item.name} 
+              active={item.name === activeGenre} 
+              onPress={setActiveGenre}
+            />
+          )}
           onPress={setActiveGenre}
         />
       </View>
@@ -63,7 +69,6 @@ export default ({ navigation }) => {
         <FlatList
           data={nowPlayingMovies}
           horizontal
-
           showHorizontalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}
           ItemSeparatorComponent={<ItemSeparator width={20}/>}

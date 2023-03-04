@@ -16,35 +16,33 @@ export class TMBDProvider extends BaseProvider {
         });
     }
 
-    getPoster(path){
+    _getPoster(path){
         return (`${setting.imageUrl}/original/${path}?api_key=${setting.apiKey}`);
     }
 
-    getNowPlayingMovies() {
+    _getNowPlayingMovies() {
         return this.get("/movie/now_playing");
     }
 
-    getAllGenres(){
+    _getAllGenres(){
         return this.get("/genre/movie/list");
     }
 
-    getUpcomingMovies(){
+    _getUpcomingMovies(){
         return this.get("/movie/upcoming")
     }
 
-    getVideo(key){
+    _getVideo(key){
         return (`${setting.videoUrl}?v=${key}`)
     }
 
-    getMovieById(movieId, append_to_response){
+    _getMovieById(movieId, append_to_response){
         return this.get(`/movie/${movieId}`, {
             params: { append_to_response }
         });
     }
     
-    getLanguage(lang){
+    _getLanguage(lang){
         return language.find(item => item.iso_639_1.toLowerCase() == `${lang}`.toLowerCase());
     }
 }
-
-export default new TMBDProvider()
