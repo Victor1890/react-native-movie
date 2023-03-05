@@ -13,7 +13,7 @@ Before cloning the repository, you need to have these technologies.
 
 ## Installation
 
-Install the projecy with npm
+Install the project with npm
 
 ```bash
   git clone https://gitlab.com/gbh-candidates/victor-rosario-victorrosario1890-2023-3-1-dev-frontend-coding-challenge-movies-app.git react-native-app
@@ -23,7 +23,7 @@ Install the projecy with npm
 cd react-native-app && npm install
 ```
 
-Install the projecy with yarn
+Install the project with yarn
 
 ```bash
   git clone https://gitlab.com/gbh-candidates/victor-rosario-victorrosario1890-2023-3-1-dev-frontend-coding-challenge-movies-app.git react-native-app
@@ -31,6 +31,17 @@ Install the projecy with yarn
 
 ```bash
 cd react-native-app && yarn
+```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+```sh
+MOVIE_API=https://api.themoviedb.org/3
+MOVIE_API_IMAGE=https://image.tmdb.org/t/p
+VIDEO_BASE_URL=https://www.youtube.com/watch
+MOVIE_API_KEY=<your api key>
 ```
 
 ## Screenshot
