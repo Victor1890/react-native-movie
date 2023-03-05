@@ -16,7 +16,7 @@ Before cloning the repository, you need to have these technologies.
 Install the project with npm
 
 ```bash
-  git clone https://gitlab.com/gbh-candidates/victor-rosario-victorrosario1890-2023-3-1-dev-frontend-coding-challenge-movies-app.git react-native-app
+  git clone https://github.com/Victor1890/react-native-movie react-native-app
 ```
 
 ```bash
@@ -26,7 +26,7 @@ cd react-native-app && npm install
 Install the project with yarn
 
 ```bash
-  git clone https://gitlab.com/gbh-candidates/victor-rosario-victorrosario1890-2023-3-1-dev-frontend-coding-challenge-movies-app.git react-native-app
+  git clone https://github.com/Victor1890/react-native-movie react-native-app
 ```
 
 ```bash
